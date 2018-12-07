@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="com.company.boilerplate.api.api.main" target="1.8" />
-      <module name="com.company.boilerplate.api.api.test" target="1.8" />
+      <module name="com.company.boilerplate.api.main" target="1.8" />
+      <module name="com.company.boilerplate.api.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

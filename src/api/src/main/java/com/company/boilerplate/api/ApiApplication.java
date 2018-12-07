@@ -1,4 +1,4 @@
-package com.company.boilerplate.api.api;
+package com.company.boilerplate.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

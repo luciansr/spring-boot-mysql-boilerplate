@@ -1,4 +1,4 @@
-package com.company.boilerplate.api.api;
+package com.company.boilerplate.api;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
