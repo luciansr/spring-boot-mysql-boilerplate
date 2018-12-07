@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/demo.iml" filepath="$PROJECT_DIR$/.idea/modules/demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/demo_main.iml" filepath="$PROJECT_DIR$/.idea/modules/demo_main.iml" group="demo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/demo_test.iml" filepath="$PROJECT_DIR$/.idea/modules/demo_test.iml" group="demo" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.api.api.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.api.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.api.api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.api.api.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.api.api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.api.api.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-boot-mysql-boilerplate.iml" filepath="$PROJECT_DIR$/spring-boot-mysql-boilerplate.iml" />
     </modules>
   </component>
 </project>
