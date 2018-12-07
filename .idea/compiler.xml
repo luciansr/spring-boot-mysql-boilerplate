@@ -6,6 +6,8 @@
       <module name="com.company.boilerplate.api.test" target="1.8" />
       <module name="com.company.boilerplate.models.main" target="1.8" />
       <module name="com.company.boilerplate.models.test" target="1.8" />
+      <module name="com.company.boilerplate.repository.main" target="1.8" />
+      <module name="com.company.boilerplate.repository.test" target="1.8" />
       <module name="com.company.boilerplate.services.main" target="1.8" />
       <module name="com.company.boilerplate.services.test" target="1.8" />
     </bytecodeTargetLevel>

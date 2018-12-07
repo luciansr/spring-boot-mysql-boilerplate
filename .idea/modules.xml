@@ -8,10 +8,12 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.models.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.models.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.models.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.models.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.models.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.models.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.repository.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.repository.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.repository.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.repository.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.repository.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.repository.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.services.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.services.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.services.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.services.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.company.boilerplate.services.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.company.boilerplate.services.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/repository.iml" filepath="$PROJECT_DIR$/.idea/modules/repository.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-mysql-boilerplate.iml" filepath="$PROJECT_DIR$/spring-boot-mysql-boilerplate.iml" />
     </modules>
   </component>
