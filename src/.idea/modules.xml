@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api.iml" filepath="$PROJECT_DIR$/.idea/modules/api.iml" group="api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/146918751/api_main.iml" filepath="$PROJECT_DIR$/.idea/modules/146918751/api_main.iml" group="api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/146918751/api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/146918751/api_test.iml" group="api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/models.iml" filepath="$PROJECT_DIR$/.idea/modules/models.iml" group="models" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/627414277/models_main.iml" filepath="$PROJECT_DIR$/.idea/modules/627414277/models_main.iml" group="models" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/627414277/models_test.iml" filepath="$PROJECT_DIR$/.idea/modules/627414277/models_test.iml" group="models" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/repository.iml" filepath="$PROJECT_DIR$/.idea/modules/repository.iml" group="repository" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/348405861/repository_main.iml" filepath="$PROJECT_DIR$/.idea/modules/348405861/repository_main.iml" group="repository" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/348405861/repository_test.iml" filepath="$PROJECT_DIR$/.idea/modules/348405861/repository_test.iml" group="repository" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services.iml" filepath="$PROJECT_DIR$/.idea/modules/services.iml" group="services" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services_main.iml" filepath="$PROJECT_DIR$/.idea/modules/services_main.iml" group="services" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services_test.iml" filepath="$PROJECT_DIR$/.idea/modules/services_test.iml" group="services" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/781647828/spring-boot-boilerplate.iml" filepath="$PROJECT_DIR$/.idea/modules/781647828/spring-boot-boilerplate.iml" />
+    </modules>
+  </component>
+</project>
