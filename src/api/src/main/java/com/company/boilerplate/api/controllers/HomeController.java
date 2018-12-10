@@ -19,8 +19,8 @@ public class HomeController {
         return new Model1();
     }
 
-    @RequestMapping(value = "/object2", method = GET)
-    public User Object1() {
-        return new User();
-    }
+//    @RequestMapping(value = "/object2", method = GET)
+//    public User Object1() {
+//        return new User();
+//    }
 }

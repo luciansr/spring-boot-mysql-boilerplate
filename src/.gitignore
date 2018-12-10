@@ -26,8 +26,13 @@
 .idea/**/dbnavigator.xml
 
 .idea/**/*.iml
+.idea/modules/*.iml
+
+.idea/compiler.xml
+.idea/modules.xml
 
 # Gradle
+
 .idea/**/gradle.xml
 .idea/**/libraries
 
