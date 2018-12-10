@@ -1,4 +1,4 @@
-package com.company.boilerplate.repository;
+package com.company.boilerplate.repository.custom;
 
 import com.company.boilerplate.repository.domain.User;
 
