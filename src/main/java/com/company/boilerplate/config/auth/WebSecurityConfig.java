@@ -1,9 +1,11 @@
 package com.company.boilerplate.config.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,8 +22,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Value("${test.string}")
+    private String test;
+
     @Autowired
     public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
+        if(test != null) {
+            System.out.println("test = " + test);
+        }
         // @formatter:off
         auth.inMemoryAuthentication()
                 .withUser("john").password(passwordEncoder.encode("123")).roles("USER").and()
@@ -36,8 +44,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
+    @Bean()
+    @Scope("prototype")
     public BCryptPasswordEncoder passwordEncoder() {
+        if(test != null) {
+            System.out.println("test = " + test);
+        }
         return new BCryptPasswordEncoder();
     }
 
