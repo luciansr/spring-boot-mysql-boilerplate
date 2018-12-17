@@ -8,28 +8,28 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    @Value("${test.string}")
-    private String test;
-
     @Autowired
     public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
-        if(test != null) {
-            System.out.println("test = " + test);
-        }
         // @formatter:off
         auth.inMemoryAuthentication()
                 .withUser("john").password(passwordEncoder.encode("123")).roles("USER").and()
@@ -47,21 +47,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean()
     @Scope("prototype")
     public BCryptPasswordEncoder passwordEncoder() {
-        if(test != null) {
-            System.out.println("test = " + test);
-        }
         return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
+        http
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().httpBasic().realmName("Spring Boot JWT Example Realm")
+            .and().csrf().disable();
         // @formatter:off
-        http.authorizeRequests().antMatchers("/login").permitAll()
-                .antMatchers("/oauth/token/revokeById/**").permitAll()
-                .antMatchers("/tokens/**").permitAll()
-                .anyRequest().authenticated()
-                .and().formLogin().permitAll()
-                .and().csrf().disable();
+//        http.authorizeRequests().antMatchers("*").permitAll();
+//        http.authorizeRequests().antMatchers("/login").permitAll()
+//                .antMatchers("/oauth/token/revokeById/**").permitAll()
+//                .antMatchers("/tokens/**").permitAll()
+//                .anyRequest().authenticated()
+//                .and().formLogin().permitAll()
+//                .and().csrf().disable();
         // @formatter:on
     }
 
@@ -86,4 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return defaultTokenServices;
     }
 
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new CustomTokenEnhancer();
+    }
 }
