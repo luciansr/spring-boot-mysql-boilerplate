@@ -1,95 +1,59 @@
 package com.company.boilerplate.config.auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
-import org.springframework.security.authentication.AuthenticationManager;
+
+import com.company.boilerplate.services.auth.LoginService;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.context.annotation.Bean;
 
-@Configuration
+
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final String SIGN_UP_URL = "";
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private LoginService loginService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
-        // @formatter:off
-        auth.inMemoryAuthentication()
-                .withUser("john").password(passwordEncoder.encode("123")).roles("USER").and()
-                .withUser("tom").password(passwordEncoder.encode("111")).roles("ADMIN").and()
-                .withUser("user1").password(passwordEncoder.encode("pass")).roles("USER").and()
-                .withUser("admin").password(passwordEncoder.encode("nimda")).roles("ADMIN");
-    }// @formatter:on
-
-    @Override
     @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean()
-    @Scope("prototype")
-    public BCryptPasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    public WebSecurityConfig(LoginService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.loginService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
     @Override
-    protected void configure(final HttpSecurity http) throws Exception {
-        http
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().httpBasic().realmName("Spring Boot JWT Example Realm")
-            .and().csrf().disable();
-        // @formatter:off
-//        http.authorizeRequests().antMatchers("*").permitAll();
-//        http.authorizeRequests().antMatchers("/login").permitAll()
-//                .antMatchers("/oauth/token/revokeById/**").permitAll()
-//                .antMatchers("/tokens/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and().formLogin().permitAll()
-//                .and().csrf().disable();
-        // @formatter:on
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable().authorizeRequests()
+                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                // this disables session creation on Spring Security
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(loginService).passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
-    }
-
-    @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("123");
-        return converter;
-    }
-
-    @Bean
-    @Primary
-    public DefaultTokenServices tokenServices() {
-        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-        defaultTokenServices.setTokenStore(tokenStore());
-        defaultTokenServices.setSupportRefreshToken(true);
-        return defaultTokenServices;
-    }
-
-    @Bean
-    public TokenEnhancer tokenEnhancer() {
-        return new CustomTokenEnhancer();
+    CorsConfigurationSource corsConfigurationSource() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 }
