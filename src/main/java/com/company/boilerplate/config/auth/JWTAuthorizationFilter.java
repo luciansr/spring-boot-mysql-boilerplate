@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -48,13 +49,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(token);
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(token, res);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+    private UsernamePasswordAuthenticationToken getAuthentication(String token, HttpServletResponse response) {
 
         if (token != null) {
             // parse the token.
@@ -81,6 +82,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
             } catch (JwtException e) {
                 System.out.println("e.getMessage() = " + e.getMessage());
+                //response.setStatus(401);
+                response.addCookie(new Cookie("teste", "asd"));
                 //don't trust the JWT!
             }
 
