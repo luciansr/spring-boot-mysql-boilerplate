@@ -22,8 +22,7 @@ import org.springframework.context.annotation.Bean;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${test.string:Tasd}")
-    private String HEADER_STRING;
+    private String HEADER_STRING = "Authorization";
     private final long EXPIRATION_TIME = 2;
     private final String TOKEN_PREFIX = "Bearer";
     private final String SECRET = "your-512-bit-secretyour-512-bit-secret";
@@ -49,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .anyRequest().permitAll()
                 .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager(), HEADER_STRING, EXPIRATION_TIME, TOKEN_PREFIX, SECRET))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+//                .addFilter(new JWTAuthenticationFilter(authenticationManager(), HEADER_STRING, EXPIRATION_TIME, TOKEN_PREFIX, SECRET))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), HEADER_STRING, TOKEN_PREFIX, SECRET))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

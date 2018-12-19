@@ -18,13 +18,18 @@ import java.util.ArrayList;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    @Value("${test.string:Tasd}")
     private String HEADER_STRING;
-    private static final String TOKEN_PREFIX = "Bearer";
-    private static final String SECRET = "your-512-bit-secretyour-512-bit-secret";
+    private final String TOKEN_PREFIX;
+    private final String SECRET;
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    public JWTAuthorizationFilter(AuthenticationManager authManager,
+                                  String headerString,
+                                  String tokenPrefix,
+                                  String secret) {
         super(authManager);
+        this.HEADER_STRING = headerString;
+        this.TOKEN_PREFIX = tokenPrefix;
+        this.SECRET = secret;
     }
 
     @Override
