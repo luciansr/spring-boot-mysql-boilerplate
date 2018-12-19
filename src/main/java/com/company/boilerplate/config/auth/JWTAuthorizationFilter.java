@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private static final String HEADER_STRING = "";
-    private static final String TOKEN_PREFIX = "";
-    private static final String SECRET = "";
+    private static final String HEADER_STRING = "Authorization";
+    private static final String TOKEN_PREFIX = "Bearer";
+    private static final String SECRET = "your-512-bit-secretyour-512-bit-secret";
 
     public JWTAuthorizationFilter(AuthenticationManager authManager) {
         super(authManager);
@@ -29,6 +29,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
+
         String header = req.getHeader(HEADER_STRING);
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
@@ -48,7 +49,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             // parse the token.
             String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
                     .build()
-                    .verify(token.replace(TOKEN_PREFIX, ""))
+                    .verify(token.replace(TOKEN_PREFIX, "").strip())
                     .getSubject();
 
             if (user != null) {

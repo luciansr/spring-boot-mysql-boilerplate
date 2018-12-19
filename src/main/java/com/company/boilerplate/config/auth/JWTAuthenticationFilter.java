@@ -20,10 +20,10 @@ import java.util.Date;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private static final String HEADER_STRING = "";
+    private static final String HEADER_STRING = "Authorization";
     private static final long EXPIRATION_TIME = 2;
-    private static final String TOKEN_PREFIX = "";
-    private static final String SECRET = "";
+    private static final String TOKEN_PREFIX = "Bearer";
+    private static final String SECRET = "your-512-bit-secretyour-512-bit-secret";
 
     private AuthenticationManager authenticationManager;
 

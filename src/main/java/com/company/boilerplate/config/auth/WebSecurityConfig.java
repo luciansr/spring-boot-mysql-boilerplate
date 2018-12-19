@@ -4,6 +4,7 @@ package com.company.boilerplate.config.auth;
 import com.company.boilerplate.services.auth.LoginService;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,8 +18,9 @@ import org.springframework.context.annotation.Bean;
 
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String SIGN_UP_URL = "";
+    private static final String SIGN_UP_URL = "/login";
 
     private LoginService loginService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -28,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    public WebSecurityConfig(LoginService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurityConfig(LoginService userDetailsService) {
         this.loginService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -36,8 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-                .anyRequest().authenticated()
+                //.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+                .anyRequest().permitAll()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
@@ -47,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(loginService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(loginService).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Bean
