@@ -23,18 +23,24 @@ import java.util.ArrayList;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private String HEADER_STRING;
+    private String AUTHORIZATION_HEADER;
     private final String TOKEN_PREFIX;
     private final String SECRET;
+    private final String AUDIENCE;
+    private final String ISSUER;
 
     public JWTAuthorizationFilter(AuthenticationManager authManager,
-                                  String headerString,
+                                  String authorizationHeader,
                                   String tokenPrefix,
-                                  String secret) {
+                                  String secret,
+                                  String audience,
+                                  String issuer) {
         super(authManager);
-        this.HEADER_STRING = headerString;
+        this.AUTHORIZATION_HEADER = authorizationHeader;
         this.TOKEN_PREFIX = tokenPrefix;
         this.SECRET = secret;
+        this.AUDIENCE = audience;
+        this.ISSUER = issuer;
     }
 
     @Override
@@ -42,7 +48,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
 
-        String token = req.getHeader(HEADER_STRING);
+        String token = req.getHeader(AUTHORIZATION_HEADER);
 
         if (token == null || !token.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(req, res);
@@ -64,8 +70,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
                 Jws<Claims> claims =  Jwts.parser()
                         .setSigningKey(key)
-                        .requireAudience("AUDIENCE")
-                        .requireIssuer("ISSUER")
+                        .requireAudience(AUDIENCE)
+                        .requireIssuer(ISSUER)
                         .parseClaimsJws(token.replace(TOKEN_PREFIX, "").strip());
 
 //                claims.getBody().g
@@ -78,7 +84,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 //                        .verify(token.replace(TOKEN_PREFIX, "").strip());
 //
 //                String user = decodedJWT.getSubject();
-                return new UsernamePasswordAuthenticationToken("ADMIN", null, new ArrayList<>());
+                return new UsernamePasswordAuthenticationToken(claims.getBody().getSubject(), null, new ArrayList<>());
 
             } catch (JwtException e) {
                 System.out.println("e.getMessage() = " + e.getMessage());
