@@ -20,14 +20,23 @@ import java.util.Date;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private static final String HEADER_STRING = "Authorization";
-    private static final long EXPIRATION_TIME = 2;
-    private static final String TOKEN_PREFIX = "Bearer";
-    private static final String SECRET = "your-512-bit-secretyour-512-bit-secret";
+    private final String HEADER_STRING;
+    private final long EXPIRATION_TIME;
+    private final String TOKEN_PREFIX;
+    private final String SECRET;
 
     private AuthenticationManager authenticationManager;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager,
+                                   String headerString,
+                                   long expirationTime,
+                                   String tokenPrefix,
+                                   String secret) {
+        this.HEADER_STRING = headerString;
+        this.EXPIRATION_TIME = expirationTime;
+        this.TOKEN_PREFIX = tokenPrefix;
+        this.SECRET = secret;
+
         this.authenticationManager = authenticationManager;
     }
 

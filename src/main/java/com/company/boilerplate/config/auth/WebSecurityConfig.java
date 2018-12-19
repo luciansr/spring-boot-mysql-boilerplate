@@ -2,6 +2,7 @@ package com.company.boilerplate.config.auth;
 
 
 import com.company.boilerplate.services.auth.LoginService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,6 +21,13 @@ import org.springframework.context.annotation.Bean;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Value("${test.string:Tasd}")
+    private String HEADER_STRING;
+    private final long EXPIRATION_TIME = 2;
+    private final String TOKEN_PREFIX = "Bearer";
+    private final String SECRET = "your-512-bit-secretyour-512-bit-secret";
+
     private static final String SIGN_UP_URL = "/login";
 
     private LoginService loginService;
@@ -41,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .anyRequest().permitAll()
                 .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), HEADER_STRING, EXPIRATION_TIME, TOKEN_PREFIX, SECRET))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
