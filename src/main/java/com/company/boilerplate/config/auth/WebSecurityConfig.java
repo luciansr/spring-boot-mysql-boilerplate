@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private String HEADER_STRING = "Authorization";
     private final long EXPIRATION_TIME = 2;
     private final String TOKEN_PREFIX = "Bearer";
-    private final String SECRET = "your-512-bit-secretyour-512-bit-secret";
+    private final String SECRET = "your-512-bit-secretyour-512-bit-secretyour-512-bit-secretyour-512-bit-secret";
 
     private static final String SIGN_UP_URL = "/login";
 
