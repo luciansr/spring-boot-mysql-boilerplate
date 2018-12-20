@@ -1,6 +1,7 @@
 package com.company.boilerplate.services.auth;
 
 import com.company.boilerplate.models.ApplicationUser;
+import com.company.boilerplate.services.UserAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +15,6 @@ import static java.util.Collections.emptyList;
 public class AuthUserDetailsService implements UserDetailsService {
 
     private UserAccessService userAccessService;
-
 
     public AuthUserDetailsService(UserAccessService userAccessService) {
         this.userAccessService = userAccessService;
