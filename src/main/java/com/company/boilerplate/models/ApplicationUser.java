@@ -1,8 +1,9 @@
 package com.company.boilerplate.models;
 
 public class ApplicationUser {
-    public ApplicationUser(String username) {
+    public ApplicationUser(String username, String password) {
         this.username = username;
+        this.password = password;
     }
 
     private long id;
