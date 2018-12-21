@@ -45,4 +45,7 @@ dependencies {
 	
 //    implementation('com.sun.xml.bind:jaxb-impl:2.2.11')
 //    implementation('com.sun.xml.bind:jaxb-core:2.2.11')
+
+	compile "io.springfox:springfox-swagger2:2.9.2"
+	compile "io.springfox:springfox-swagger-ui:2.9.2"
 }
