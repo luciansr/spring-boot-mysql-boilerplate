@@ -14,7 +14,7 @@ public class AuthController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/token")
+    @PostMapping("/auth/token")
     public String getToken(
             @RequestParam("username") String username,
             @RequestParam("password") String password) {
