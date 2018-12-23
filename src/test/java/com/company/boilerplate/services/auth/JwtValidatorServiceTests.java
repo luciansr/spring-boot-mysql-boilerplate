@@ -1,7 +1,6 @@
 package com.company.boilerplate.services.auth;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+import com.company.boilerplate.models.auth.JwtValidatedClaims;
 import io.jsonwebtoken.security.Keys;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -32,10 +31,10 @@ public class JwtValidatorServiceTests {
                 keyGeneratorService
         );
 
-        Jws<Claims> claims = jwtCreatorService.validateJwt(token);
+        JwtValidatedClaims claims = jwtCreatorService.validateJwt(token);
 
-        assertEquals("ADMIN", claims.getBody().getSubject());
-        assertEquals("AUDIENCE", claims.getBody().getAudience());
-        assertEquals("ISSUER", claims.getBody().getIssuer());
+        assertEquals("ADMIN", claims.getSubject());
+        assertEquals("AUDIENCE", claims.getAudience());
+        assertEquals("ISSUER", claims.getIssuer());
     }
 }

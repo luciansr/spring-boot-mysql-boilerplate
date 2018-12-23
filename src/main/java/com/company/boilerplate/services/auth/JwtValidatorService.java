@@ -1,5 +1,6 @@
 package com.company.boilerplate.services.auth;
 
+import com.company.boilerplate.models.auth.JwtValidatedClaims;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -23,16 +24,27 @@ public class JwtValidatorService {
         this.keyGeneratorService = keyGeneratorService;
     }
 
-    public Jws<Claims> validateJwt(String token) {
+    public JwtValidatedClaims validateJwt(String token) {
         try {
-            return  Jwts.parser()
+              Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(keyGeneratorService.getJwtValidationKey())
                     .requireAudience(AUDIENCE)
                     .requireIssuer(ISSUER)
                     .parseClaimsJws(token.strip());
+
+            return getJwtValidatedClaims(claims);
         } catch (JwtException e) {
             //don't trust the JWT!
             return null;
         }
+    }
+
+    private JwtValidatedClaims getJwtValidatedClaims(Jws<Claims> claims) {
+        if(claims == null) return null;
+
+        return new JwtValidatedClaims(
+                claims.getBody().getSubject(),
+                claims.getBody().getIssuer(),
+                claims.getBody().getAudience());
     }
 }

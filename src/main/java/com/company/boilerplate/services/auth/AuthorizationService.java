@@ -1,6 +1,7 @@
 package com.company.boilerplate.services.auth;
 
 import com.company.boilerplate.models.auth.AuthorizedUser;
+import com.company.boilerplate.models.auth.JwtValidatedClaims;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,13 @@ public class AuthorizationService {
     }
 
     public AuthorizedUser authorizeUser(String jwtToken) {
-        Jws<Claims> claims = jwtValidatorService.validateJwt(jwtToken);
+        JwtValidatedClaims claims = jwtValidatorService.validateJwt(jwtToken);
         return getAuthorizedUserFromClaims(claims);
     }
 
-    private AuthorizedUser getAuthorizedUserFromClaims(Jws<Claims> claims) {
+    private AuthorizedUser getAuthorizedUserFromClaims(JwtValidatedClaims claims) {
         if(claims == null) return null;
-        return new AuthorizedUser(claims.getBody().getSubject());
+        return new AuthorizedUser(claims.getSubject());
     }
 
 }
