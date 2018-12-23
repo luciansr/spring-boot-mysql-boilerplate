@@ -37,6 +37,7 @@ public class JwtCreatorService {
                 .setIssuer(ISSUER)
                 .setIssuedAt(dateHelper.localDateTimeToDate(issuedAt))
                 .setExpiration(dateHelper.addMinutes(issuedAt, EXPIRATION_IN_MINUTES))
-                .signWith(keyGeneratorService.getJwtSigningKey()).compact();
+                .signWith(keyGeneratorService.getJwtSigningKey())
+                .compact();
     }
 }

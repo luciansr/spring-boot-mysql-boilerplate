@@ -57,7 +57,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token, HttpServletResponse response) {
-        AuthorizedUser user = authorizationService.authorizeUser(token);
+        AuthorizedUser user = authorizationService.authorizeUser(token.replace(TOKEN_PREFIX, ""));
         if(user == null) return null;
 
 //        response.addCookie(new Cookie("teste", "asd"));

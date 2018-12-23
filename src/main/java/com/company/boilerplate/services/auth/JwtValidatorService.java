@@ -7,8 +7,6 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
-
 @Service
 public class JwtValidatorService {
     private final String AUDIENCE;
@@ -16,8 +14,8 @@ public class JwtValidatorService {
     private final KeyGeneratorService keyGeneratorService;
 
     public JwtValidatorService(
-            @Value("jwt.config.audience") final String audience,
-            @Value("jwt.config.issuer") final String issuer,
+            @Value("${jwt.config.audience}") final String audience,
+            @Value("${jwt.config.issuer}") final String issuer,
             KeyGeneratorService keyGeneratorService) {
 
         this.AUDIENCE = audience;
