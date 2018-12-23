@@ -6,7 +6,7 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Service
 public class JwtCreatorService {
@@ -29,13 +29,13 @@ public class JwtCreatorService {
         this.dateHelper = dateHelper;
     }
 
-    public String createJwtToken(final JwtData jwtData, Date issuedAt) {
+    public String createJwtToken(final JwtData jwtData, LocalDateTime issuedAt) {
         return Jwts.builder()
                 .setSubject(jwtData.username)
                 .addClaims(jwtData.claims)
                 .setAudience(AUDIENCE)
                 .setIssuer(ISSUER)
-                .setIssuedAt(issuedAt)
+                .setIssuedAt(dateHelper.localDateTimeToDate(issuedAt))
                 .setExpiration(dateHelper.addMinutes(issuedAt, EXPIRATION_IN_MINUTES))
                 .signWith(keyGeneratorService.getJwtSigningKey()).compact();
     }

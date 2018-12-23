@@ -1,9 +1,9 @@
 package com.company.boilerplate.config.auth;
 
 
+import com.company.boilerplate.services.auth.AuthorizationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,9 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.context.annotation.Bean;
 
 
@@ -28,12 +25,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private String AUTHORIZATION_HEADER;
     @Value("${jwt.config.token-prefix}")
     private String TOKEN_PREFIX;
-    @Value("${jwt.config.secret}")
-    private String SECRET;
-    @Value("${jwt.config.audience}")
-    private String AUDIENCE;
-    @Value("${jwt.config.issuer}")
-    private String ISSUER;
+
+    private final AuthorizationService authorizationService;
+
+    public WebSecurityConfig(AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -48,9 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(),
                         AUTHORIZATION_HEADER,
                         TOKEN_PREFIX,
-                        SECRET,
-                        AUDIENCE,
-                        ISSUER))
+                        authorizationService))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     }

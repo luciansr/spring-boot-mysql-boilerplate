@@ -4,6 +4,8 @@ package com.company.boilerplate.config.auth;
 //import com.auth0.jwt.algorithms.Algorithm;
 //import com.auth0.jwt.interfaces.DecodedJWT;
 //import com.auth0.jwt.interfaces.Verification;
+import com.company.boilerplate.models.auth.AuthorizedUser;
+import com.company.boilerplate.services.auth.AuthorizationService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,31 +25,24 @@ import java.util.ArrayList;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private String AUTHORIZATION_HEADER;
+    private final AuthorizationService authorizationService;
+    private final String AUTHORIZATION_HEADER;
     private final String TOKEN_PREFIX;
-    private final String SECRET;
-    private final String AUDIENCE;
-    private final String ISSUER;
 
     public JWTAuthorizationFilter(AuthenticationManager authManager,
                                   String authorizationHeader,
                                   String tokenPrefix,
-                                  String secret,
-                                  String audience,
-                                  String issuer) {
+                                  AuthorizationService authorizationService) {
         super(authManager);
         this.AUTHORIZATION_HEADER = authorizationHeader;
         this.TOKEN_PREFIX = tokenPrefix;
-        this.SECRET = secret;
-        this.AUDIENCE = audience;
-        this.ISSUER = issuer;
+        this.authorizationService = authorizationService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
-
         String token = req.getHeader(AUTHORIZATION_HEADER);
 
         if (token == null || !token.startsWith(TOKEN_PREFIX)) {
@@ -62,44 +57,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token, HttpServletResponse response) {
+        AuthorizedUser user = authorizationService.authorizeUser(token);
+        if(user == null) return null;
 
-        if (token != null) {
-            // parse the token.
-            try {
-                Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
-
-                Jws<Claims> claims =  Jwts.parser()
-                        .setSigningKey(key)
-                        .requireAudience(AUDIENCE)
-                        .requireIssuer(ISSUER)
-                        .parseClaimsJws(token.replace(TOKEN_PREFIX, "").strip());
-
-//                claims.getBody().g
-
-
-                System.out.println("claims = " + claims);
-                //OK, we can trust this JWT
-//                DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
-//                        .build()
-//                        .verify(token.replace(TOKEN_PREFIX, "").strip());
-//
-//                String user = decodedJWT.getSubject();
-                return new UsernamePasswordAuthenticationToken(claims.getBody().getSubject(), null, new ArrayList<>());
-
-            } catch (JwtException e) {
-                System.out.println("e.getMessage() = " + e.getMessage());
-                //response.setStatus(401);
-                response.addCookie(new Cookie("teste", "asd"));
-                //don't trust the JWT!
-            }
-
-
-
-//            if (user != null) {
-//
-//            }
-            return null;
-        }
-        return null;
+//        response.addCookie(new Cookie("teste", "asd"));
+        return new UsernamePasswordAuthenticationToken(user.getUsername(), null, new ArrayList<>());
     }
 }

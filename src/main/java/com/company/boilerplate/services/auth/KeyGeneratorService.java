@@ -17,4 +17,8 @@ public class KeyGeneratorService {
     public Key getJwtSigningKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
+
+    public Key getJwtValidationKey() {
+        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    }
 }

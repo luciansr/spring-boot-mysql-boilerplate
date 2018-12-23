@@ -6,6 +6,8 @@ import com.company.boilerplate.services.UserAccessService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import static java.util.Collections.emptyMap;
@@ -28,6 +30,6 @@ public class AuthenticationService {
         ApplicationUser applicationUser = userAccessService.getUserByUsername(username);
 
         if(applicationUser == null || !bCryptPasswordEncoder.matches(password, applicationUser.getPassword())) return null;
-        return jwtCreatorService.createJwtToken(new JwtData(username, "ADMIN", emptyMap()), new Date());
+        return jwtCreatorService.createJwtToken(new JwtData(username, "ADMIN", emptyMap()), LocalDateTime.now(ZoneId.of("UTC")));
     }
 }
