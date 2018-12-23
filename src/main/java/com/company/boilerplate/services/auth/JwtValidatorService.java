@@ -35,6 +35,4 @@ public class JwtValidatorService {
             return null;
         }
     }
-
-
 }

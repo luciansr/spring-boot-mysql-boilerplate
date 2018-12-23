@@ -33,4 +33,14 @@ public class DateHelperTests {
 
         assertEquals(expected, result);
     }
+
+    @Test
+    public void add_30Minutes_Test() {
+        DateHelper dateHelper = new DateHelper();
+
+        Date expected = new Date(1500001800000L);
+        Date result = dateHelper.addMinutes(LocalDateTime.ofInstant(Instant.ofEpochMilli(1500000000000L), ZoneId.of("UTC")), 30);
+
+        assertEquals(expected, result);
+    }
 }
