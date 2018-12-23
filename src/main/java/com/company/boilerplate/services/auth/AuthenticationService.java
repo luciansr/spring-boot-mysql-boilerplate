@@ -30,6 +30,11 @@ public class AuthenticationService {
         ApplicationUser applicationUser = userAccessService.getUserByUsername(username);
 
         if(applicationUser == null || !bCryptPasswordEncoder.matches(password, applicationUser.getPassword())) return null;
-        return jwtCreatorService.createJwtToken(new JwtData(username, "ADMIN", emptyMap()), LocalDateTime.now(ZoneId.of("UTC")));
+        return jwtCreatorService.createJwtToken(
+                new JwtData(
+                        applicationUser.getUsername(),
+                        applicationUser.getRole(),
+                        emptyMap()),
+                LocalDateTime.now(ZoneId.of("UTC")));
     }
 }
